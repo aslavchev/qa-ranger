@@ -54,6 +54,7 @@ level: integration|system|acceptance
 priority: P0|P1|P2|P3
 technique: boundary|equivalence|state-transition|exploratory|decision-table|idor|injection|concurrency
 automation_candidate: yes|no|maybe
+tags: [positive|negative]
 ```
 
 **`id`** — `TC-{MODULE}-{NNN}` where MODULE is from your Step 2 mapping and NNN is a zero-padded three-digit counter starting at 001 within each module.
@@ -82,6 +83,11 @@ automation_candidate: yes|no|maybe
 - `yes` — deterministic, stateless or easy to set up, no human judgment required in the Then clause
 - `no` — exploratory, usability, requires visual inspection, or human judgment is essential
 - `maybe` — automatable in principle but requires non-trivial setup, mocking, or environment configuration
+
+**`tags`**:
+- `positive` — the test case exercises a valid input or happy path and expects a success response
+- `negative` — the test case exercises an invalid input, rejection path, or error condition and expects a non-success response
+- Assign exactly one. When in doubt: if the Then clause asserts a 4xx/5xx or a rejection, it is `negative`; if it asserts 200/201 or a successful outcome, it is `positive`.
 
 ### 3b — Scenario Body
 
@@ -152,6 +158,7 @@ level: ...
 priority: ...
 technique: ...
 automation_candidate: ...
+tags: ...
 ```
 
 **Given** ...
