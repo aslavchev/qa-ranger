@@ -109,7 +109,29 @@ Read the "Explicit (from task input)" section of domain-analysis.md. Map each ex
 
 If no explicit criteria are stated, note that and proceed with domain-risk defaults.
 
-### 4d — Technique Selection
+### 4d — Business Rules Mining
+
+Read the **Explorer Notes** section of `_qa/domain-analysis.md`. This section contains observations the Explorer flagged but did not convert into risk areas — including references to help articles, implied product behaviors, and business rules not captured in the API or UI spec.
+
+For every note that references a non-obvious behavior, help article, product constraint, or cross-feature interaction:
+
+1. Ask: **"Is this a business rule that can be tested via this API or UI surface?"**
+   - Yes — add it to the risk area list for Step 4b and include it in the Writer Brief.
+   - Partially — add it as an exploratory test area with a note about what cannot be fully asserted.
+   - No — add it to Global Exclusions with the reason it is untestable from the available surface.
+
+2. For each extracted rule, produce a one-line entry before proceeding:
+   - **Rule:** [what the behavior is]
+   - **Source:** [where it was implied — help article name, domain description, assignment email, etc.]
+   - **Testable via API/UI?** [Yes / Partially / No — with one-line reason]
+
+3. Rules marked Yes or Partially must appear as named test areas in the Writer Brief. Do not merge them silently into existing areas — give each extracted rule its own entry or explicitly note which existing area absorbs it and why.
+
+**Do not skip this step.** If Explorer Notes are absent or empty, state that explicitly. If no business rules are implied beyond what was already captured in 4b, state "No additional rules extracted from Explorer Notes."
+
+---
+
+### 4e — Technique Selection
 
 For each risk area identified in 4b, select the most appropriate technique(s). Require one-line reasoning per selection — do not list techniques without justification.
 
@@ -123,7 +145,7 @@ Available techniques:
 - **Exploratory / tour-based** — for non-obvious interactions, async behaviors, domain edge cases from the "Non-obvious edge cases" field in matched patterns
 - **Performance / concurrency testing** — for race conditions and load scenarios; use when domain pattern's performance concerns section flags a specific risk
 
-### 4e — Coverage Confidence Check
+### 4f — Coverage Confidence Check
 
 Before finalizing the strategy, ask: "Would a senior QA engineer sign off on this coverage plan?"
 

@@ -141,7 +141,20 @@ Create `_qa/domain-analysis.md` with the following structure. Every section must
 [numbered list of every gap, contradiction, or unclear item — or "None identified"]
 
 ## Explorer Notes
-[Any observations that do not fit above but would be useful to the strategist]
+
+Work through the following four checks explicitly. For each check, write at least one entry or write "None found." Never omit a check.
+
+**1. Help article and product doc references**
+List every reference to help articles, support docs, or product guides found in the inputs — even if they were not provided as inputs themselves. For each, state what behavior it implies that is not captured in the API spec or UI flow descriptions above.
+
+**2. Implied product behaviors from business context**
+Review the assignment email, task description, and domain description for behaviors mentioned in prose that did not produce an endpoint or UI flow. List each one explicitly as: "[Behavior] — implied by [source]."
+
+**3. Cross-feature interactions**
+Identify any interactions between entities or features that are implied but not explicitly tested by individual endpoints or flows. Examples: what happens when a locked record is deleted, what happens when a referenced entity is removed, what happens when two features share state.
+
+**4. Evaluator signals beyond the spec**
+Re-read any evaluation criteria or assignment context. Note any signals that the evaluator expects coverage of areas not directly visible in the provided documentation (e.g., "widely used system," references to business rules, mentions of edge cases or scenarios by name).
 ```
 
 ---

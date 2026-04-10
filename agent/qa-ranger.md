@@ -105,6 +105,10 @@ Produce the following structured report:
 
 Extract the top 3 decisions from the Writer Brief Work Queue in `_qa/risk-strategy.md` — use the first three entries with their priority tier and technique reasoning.
 
+After producing the summary, read the **Explorer Notes** section of `_qa/domain-analysis.md`. If all four checks contain "None found" — or if the Explorer Notes section is absent or sparse — append this note to the summary:
+
+> **Note:** No business rule references were found in the provided inputs. If help articles, product guides, or additional business context exist for this system, re-run with them included — they may surface additional test areas.
+
 ---
 
 ## Step 6 — Edge cases
