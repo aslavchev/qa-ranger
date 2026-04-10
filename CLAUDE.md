@@ -32,11 +32,13 @@ agent/qa-ranger.md          ← orchestrator (Phase 4) — invocation entry poin
 
 **Explorer** — auto-detects input mode (files, URLs, both, or scan current project). Always accepts free text alongside other inputs. Flags ambiguities explicitly rather than silently skipping them. Classifies task as API-only, UI-only, or Both — this drives the entire downstream strategy.
 
-**Strategist** — domain-risk-first reasoning (not ISTQB-first). Uses the Domain Pattern Library (`skills/qa-ranger-patterns.md`) as its primary knowledge source. Maps coverage to Agile Testing Quadrants (Crispin/Gregory): Q1+Q4 dominate for API-only, Q2+Q3 for UI-only, all quadrants for Both. Must explicitly state domain match confidence and flag unknown domains.
+**Strategist** — domain-risk-first reasoning (not ISTQB-first). Uses the Domain Pattern Library (`skills/qa-ranger-patterns.md`) as its primary knowledge source. Maps coverage to Agile Testing Quadrants (Crispin/Gregory): Q1+Q4 dominate for API-only, Q2+Q3 for UI-only, all quadrants for Both. Must explicitly state domain match confidence and flag unknown domains. Includes a Business Rules Mining step that reads Explorer Notes from `_qa/domain-analysis.md` and converts implied product behaviors, help article references, and cross-feature constraints into named test areas — each extracted rule must appear explicitly in the Writer Brief, not be silently merged.
 
 **Domain Pattern Library** (`skills/qa-ranger-patterns.md`) — a versioned, expandable knowledge asset separate from the skill prompt. Each pattern covers: critical failure modes, state transitions, non-obvious edge cases, security surface, performance concerns, UI surface risks, and quadrant weight. The `UI surface` field contains domain-specific failure modes that only manifest at the interface layer; the strategist applies it automatically when task type is UI-only or Both. Initial domains: billing/recurring charges, auth/authorization, inventory/resource management, user/member management, search/filtering, file/media handling, notifications/messaging. Grows with each new assignment.
 
 **Writer** — produces test cases in hybrid Gherkin/BDD format with YAML front-matter per case (id, title, type, level, priority P0–P3, technique, automation_candidate). Organized by risk priority (P0 first), grouped by functional area — never by HTTP method or UI screen. Coverage summary is written in plain language readable by non-QA stakeholders.
+
+**Orchestrator** — after producing the final summary, reads Explorer Notes from `_qa/domain-analysis.md`. If no business rule references were found (all checks empty or section absent), appends a note prompting the user to re-run with help articles or additional business context.
 
 ## Output Format
 

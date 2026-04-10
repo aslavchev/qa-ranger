@@ -36,11 +36,11 @@ Three skills run in sequence. Each one produces a file the next one consumes:
 
 **1. Explorer** — reads your inputs (files, URLs, free text, or auto-scans the project). Classifies the task as API-only, UI-only, or both. Maps every endpoint, flow, data model, and requirement. Flags ambiguities explicitly.
 
-**2. Strategist** — loads the Domain Pattern Library, matches the system against known domains (billing, auth, inventory, etc.), ranks risk areas by business impact, and selects test techniques. Produces a specific brief for the writer.
+**2. Strategist** — loads the Domain Pattern Library, matches the system against known domains (billing, auth, inventory, etc.), ranks risk areas by business impact, and selects test techniques. Also mines implied business rules from documentation notes — behaviors not captured in the API spec but inferable from product context, help articles, or business constraints. Each extracted rule must appear as a named test area. Produces a specific brief for the writer.
 
 **3. Writer** — executes the brief. Writes test cases in Gherkin format with YAML metadata (priority, type, technique, automation candidate). Organized by risk priority — P0 first, P3 last. Produces a plain-language coverage summary for stakeholders.
 
-You invoke one command. The three steps run automatically end to end.
+You invoke one command. The three steps run automatically end to end. If no business rule references are found in your inputs, the agent will tell you and suggest re-running with additional context — help articles, product guides, or a task description.
 
 ---
 
@@ -52,7 +52,7 @@ You invoke one command. The three steps run automatically end to end.
 
 ## Setup
 
-Clone the repo, then copy the 5 files into a commands directory:
+Clone the repo, then copy the 5 files into a commands directory (`qa-ranger-explorer.md`, `qa-ranger-strategist.md`, `qa-ranger-writer.md`, `qa-ranger-patterns.md`, `qa-ranger.md`):
 
 ```bash
 git clone https://github.com/aslavchev/qa-ranger.git
@@ -70,6 +70,8 @@ cp qa-ranger/agent/qa-ranger.md /path/to/your-project/.claude/commands/
 cp qa-ranger/skills/*.md ~/.claude/commands/
 cp qa-ranger/agent/qa-ranger.md ~/.claude/commands/
 ```
+
+The 5 files must all be present — the orchestrator calls the four skills internally. You only ever invoke `/qa-ranger`. The individual skills (`/qa-ranger-explorer`, `/qa-ranger-strategist`, `/qa-ranger-writer`) can also be called directly if you want to re-run a specific stage without restarting the full pipeline.
 
 Add `_qa/` to your `.gitignore` to avoid committing run outputs.
 
@@ -89,7 +91,7 @@ Context: [any additional context — task description, requirements, scope notes
 ```
 /qa-ranger
 ```
-No input — scans the current project automatically.
+Current repo as input — scans README, API specs, route files, and test files automatically.
 
 ---
 
@@ -110,7 +112,7 @@ This tool produces test planning artifacts. Test execution and automation are se
 
 ## Domain Pattern Library
 
-Seven domains are built in. The strategist matches your system against all of them automatically:
+The library is installed as `qa-ranger-patterns.md` alongside the other skills — it is a required file, not baked into the agent. The strategist loads it on every run. Seven domains are included:
 
 - **Billing / Recurring Charges** — charge idempotency, proration edge cases, subscription state transitions, webhook replay
 - **Authentication / Authorization** — IDOR, privilege escalation, token lifecycle, session management, JWT edge cases
@@ -122,7 +124,7 @@ Seven domains are built in. The strategist matches your system against all of th
 
 Each pattern covers: critical failure modes, state transitions, non-obvious edge cases, security surface, performance concerns, and UI surface risks.
 
-New domains can be added using the template in `skills/qa-ranger-patterns.md`. The library grows with each new assignment.
+New domains can be added using the template at the bottom of `qa-ranger-patterns.md` wherever it is installed. The library grows with each new assignment.
 
 ---
 
